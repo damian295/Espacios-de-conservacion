@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Guía Práctica: Espacios de Conservación</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #27ae60;
+  --primary-light: #2ecc71;
+  --primary-dark: #219653;
+  --secondary: #3498db;
+  --secondary-light: #5dade2;
+  --accent: #e67e22;
+  --accent-light: #f39c12;
+  --warning: #e74c3c;
+  --dark: #2c3e50;
+  --dark-light: #34495e;
+  --light: #f8f9fa;
+  --gray: #95a5a6;
+  --gray-light: #bdc3c7;
+  --white: #ffffff;
+  --shadow: 0 10px 30px rgba(0,0,0,0.1);
+  --shadow-hover: 0 15px 35px rgba(0,0,0,0.15);
+  --transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,rgba(240,249,244,0.7) 0%,rgba(214,237,228,0.7) 100%),url('infografia.jpg') no-repeat center center fixed; background-size:cover; min-height:100vh; display:flex; flex-direction:column; align-items:center; color:var(--dark); line-height:1.6; }
+
+.wrapper { width:100%; max-width:1200px; padding:20px; }
+header { text-align:center; margin-bottom:30px; width:100%; animation:fadeIn 0.8s ease; padding:20px 0; position:relative; background-color:rgba(255,255,255,0.85); border-radius:12px; box-shadow:var(--shadow); }
+h1 { font-size:2.5rem; margin-bottom:15px; color:var(--primary-dark); font-weight:700; font-family:'Roboto Slab',serif; }
+header p { font-size:1.1rem; color:var(--gray); max-width:800px; margin:0 auto 20px; }
+
+.intro-text { background-color:rgba(255,255,255,0.95); padding:25px; border-radius:12px; margin-bottom:30px; box-shadow:var(--shadow); border-left:5px solid var(--primary); }
+.intro-text h3 { color:var(--primary-dark); margin-bottom:15px; display:flex; align-items:center; gap:10px; }
+.intro-text p { margin-bottom:15px; color:var(--dark-light); }
+.intro-text strong { color:var(--primary-dark); }
+.intro-text ol { padding-left:20px; margin-bottom:15px; }
+.intro-text li { margin-bottom:8px; color:var(--dark-light); }
+
+.decision-section { background-color:rgba(255,255,255,0.95); padding:25px; border-radius:12px; margin-bottom:30px; box-shadow:var(--shadow); border-left:5px solid var(--secondary); }
+.decision-section h3 { color:var(--secondary); margin-bottom:15px; display:flex; align-items:center; gap:10px; }
+.decision-section p { margin-bottom:20px; color:var(--dark-light); }
+.decision-btn { display:inline-block; padding:12px 25px; background:var(--secondary); color:white; border-radius:30px; font-weight:600; text-decoration:none; transition:var(--transition); margin-top:10px; border:none; cursor:pointer; font-size:1rem; }
+.decision-btn:hover { background:var(--secondary-light); transform:translateY(-3px); box-shadow:0 8px 20px rgba(52,152,219,0.3); }
+.decision-btn i { margin-right:8px; }
+
+.container { width:100%; position:relative; animation:slideUp 0.8s ease; display:flex; flex-direction:column; gap:30px; }
+.section-title { display:flex; align-items:center; gap:15px; margin-bottom:20px; color:var(--primary-dark); font-family:'Roboto Slab',serif; font-size:1.8rem; }
+.section-title i { color:var(--primary); font-size:1.5rem; }
+
+.map-container { position:relative; background:var(--white); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; transition:var(--transition); margin-bottom:30px; }
+.map-image { width:100%; display:block; transition:var(--transition); }
+
+.video-container { position:relative; width:100%; }
+.video-container video { width:100%; display:block; }
+
+.video-controls { position:absolute; bottom:10px; left:10px; right:10px; display:flex; justify-content:center; gap:10px; z-index:10; }
+.video-control-btn { background:rgba(0,0,0,0.7); color:white; border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); }
+.video-control-btn:hover { transform:scale(1.1); }
+.video-control-btn.primary { background:var(--primary); }
+.video-control-btn.warning { background:var(--warning); }
+.video-control-btn.accent { background:var(--accent); }
+
+.interactive-point { position:absolute; width:30px; height:30px; border-radius:50%; background-color:rgba(39,174,96,0.3); border:2px solid var(--primary); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:var(--transition); z-index:10; }
+.interactive-point.selected { background-color:rgba(231,76,60,0.3); border:2px solid var(--warning); }
+.interactive-point.selected::after { background-color:var(--warning); }
+.interactive-point::after { content:''; width:12px; height:12px; border-radius:50%; background-color:var(--primary); transition:var(--transition); }
+.point-label { position:absolute; top:-25px; left:50%; transform:translateX(-50%); background:var(--white); padding:3px 8px; border-radius:15px; font-size:0.8rem; font-weight:500; color:var(--dark); box-shadow:0 2px 5px rgba(0,0,0,0.1); opacity:0; transition:var(--transition); white-space:nowrap; }
+.interactive-point:hover .point-label { opacity:1; top:-35px; }
+
+.steps-container { display:flex; flex-direction:column; gap:20px; }
+.step-card { background:var(--white); border-radius:12px; padding:25px; box-shadow:var(--shadow); position:relative; overflow:hidden; border-left:5px solid var(--primary); background-image:var(--bg-image); background-size:cover; background-position:center; background-blend-mode:overlay; background-color:rgba(255,255,255,0.9); display:flex; flex-wrap:wrap; }
+.step-number { position:absolute; left:-15px; top:-15px; width:60px; height:60px; background:var(--primary); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.5rem; font-family:'Roboto Slab',serif; box-shadow:0 4px 8px rgba(0,0,0,0.1); z-index:2; transition:var(--transition); cursor:pointer; }
+.step-number:hover { transform:scale(1.1); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
+.step-number.completed { background:var(--warning); }
+.step-content { position:relative; z-index:1; flex:1; min-width:300px; }
+.step-card h3 { color:var(--primary-dark); margin-bottom:15px; font-size:1.3rem; padding-left:50px; }
+.step-card p { color:var(--dark-light); margin-bottom:15px; }
+.step-card ul { padding-left:20px; margin-bottom:15px; }
+.step-card li { margin-bottom:8px; color:var(--dark-light); position:relative; }
+.step-card li::before { content:"•"; color:var(--primary); font-weight:bold; display:inline-block; width:1em; margin-left:-1em; }
+.step-actions { display:flex; gap:15px; margin-top:20px; flex-wrap:wrap; width:100%; }
+.step-btn { padding:10px 20px; border-radius:8px; font-weight:500; cursor:pointer; transition:var(--transition); border:none; display:flex; align-items:center; gap:8px; }
+.step-btn.primary { background:var(--primary); color:white; }
+.step-btn.primary.completed { background:var(--warning); }
+.step-btn.primary:hover { background:var(--primary-dark); transform:translateY(-2px); box-shadow:0 5px 15px rgba(39,174,96,0.3); }
+.step-btn.secondary { background:var(--light); color:var(--dark); border:1px solid var(--gray-light); }
+.step-btn.secondary:hover { background:var(--gray-light); color:white; }
+
+.space-highlight { background-color:rgba(39,174,96,0.1); padding:15px; border-radius:8px; margin:15px 0; border-left:3px solid var(--primary); }
+.space-highlight h4 { color:var(--primary-dark); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.space-highlight p { color:var(--dark-light); margin-bottom:10px; }
+.space-visual { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.space-tag { background:var(--primary-light); color:white; padding:5px 10px; border-radius:20px; font-size:0.85rem; display:flex; align-items:center; gap:5px; }
+.space-tag i { font-size:0.8rem; }
+
+.fixed-process-diagram { position:sticky; top:20px; z-index:100; background-color:rgba(255,255,255,0.95); padding:15px; border-radius:12px; box-shadow:var(--shadow); margin-bottom:20px; display:flex; align-items:center; }
+.process-diagram-container { flex:3; }
+.process-steps-container { display:flex; align-items:center; justify-content:center; flex:1; }
+.process-diagram { display:flex; justify-content:center; margin:20px 0; position:relative; }
+.process-step { display:flex; flex-direction:column; align-items:center; position:relative; padding:0 15px; z-index:2; }
+.process-icon { width:60px; height:60px; background:var(--primary-light); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:1.5rem; margin-bottom:10px; box-shadow:0 4px 10px rgba(39,174,96,0.3); transition:var(--transition); cursor:pointer; }
+.process-icon:hover { transform:scale(1.1); }
+.process-icon.completed { background:var(--warning); }
+.process-label { font-weight:500; color:var(--primary-dark); text-align:center; max-width:100px; }
+.process-connector { position:absolute; top:30px; left:0; right:0; height:3px; background:var(--primary-light); z-index:1; }
+.process-arrow { position:absolute; top:28px; right:-10px; color:var(--primary); }
+.current-step-image { height:150px; width:auto; border-radius:8px; object-fit:cover; margin-left:20px; box-shadow:var(--shadow); transition:var(--transition); cursor:pointer; }
+.current-step-image:hover { transform:scale(1.05); }
+
+.tooltip-sidebar { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90%; max-width:500px; max-height:80vh; background:var(--white); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.2); padding:25px; font-size:15px; overflow-y:auto; display:none; opacity:0; transition:opacity 0.3s ease; z-index:1001; pointer-events:auto; }
+.tooltip-sidebar.visible { display:block; opacity:1; }
+.tooltip-sidebar h3 { margin:0 0 10px 0; font-size:1.5rem; color:var(--primary-dark); font-weight:600; font-family:'Roboto Slab',serif; }
+.tooltip-sidebar .tooltip-subtitle { color:var(--gray); font-weight:500; margin-bottom:15px; display:flex; align-items:center; gap:8px; }
+.tooltip-sidebar .tooltip-subtitle i { color:var(--primary); }
+.tooltip-sidebar p { margin:0 0 15px 0; color:var(--dark-light); line-height:1.7; }
+.tooltip-sidebar ul { margin:0 0 15px 0; padding-left:20px; }
+.tooltip-sidebar li { margin-bottom:8px; color:var(--dark-light); }
+.tooltip-details { padding:15px; border-radius:8px; margin:15px 0; background:rgba(255,255,255,0.8); border-left:4px solid var(--primary); }
+.tooltip-details:nth-child(1) { border-color:var(--primary); }
+.tooltip-details:nth-child(2) { border-color:var(--secondary); background:rgba(52,152,219,0.1); }
+.tooltip-details:nth-child(3) { border-color:#9b59b6; background:rgba(155,89,182,0.1); }
+.tooltip-details h4 { color:var(--primary-dark); margin-bottom:8px; font-size:1rem; }
+.tooltip-details p { font-size:0.9rem; margin-bottom:0; }
+.tooltip-footer { display:flex; justify-content:space-between; align-items:center; margin-top:15px; }
+.tooltip-link { display:inline-flex; align-items:center; gap:8px; padding:10px 15px; background:var(--primary); color:white; text-decoration:none; border-radius:8px; font-weight:500; transition:var(--transition); }
+.tooltip-link:hover { background:var(--primary-light); transform:translateY(-2px); box-shadow:0 5px 15px rgba(39,174,96,0.3); }
+.close-btn { position:absolute; top:15px; right:15px; width:36px; height:36px; border-radius:50%; background:rgba(0,0,0,0.1); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); z-index:10; }
+.close-btn:hover { background:rgba(0,0,0,0.2); transform:rotate(90deg); }
+
+.selected-spaces-footer { background-color:rgba(255,255,255,0.95); padding:15px; border-radius:12px; margin-top:20px; box-shadow:var(--shadow); border-left:5px solid var(--accent); }
+.selected-spaces-footer h4 { color:var(--accent); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.selected-spaces-list { display:flex; flex-wrap:wrap; gap:10px; }
+.selected-space-tag { background:var(--accent); color:white; padding:5px 15px; border-radius:20px; font-size:0.9rem; display:flex; align-items:center; gap:5px; }
+
+.report-container { background-color:rgba(255,255,255,0.95); padding:25px; border-radius:12px; margin-top:30px; box-shadow:var(--shadow); border-left:5px solid var(--primary-dark); display:none; }
+.report-container h3 { color:var(--primary-dark); margin-bottom:15px; font-family:'Roboto Slab',serif; }
+.report-section { margin-bottom:20px; }
+.report-section h4 { color:var(--primary); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.report-section ul { padding-left:20px; }
+.report-section li { margin-bottom:8px; }
+
+.report-infographic { display:flex; flex-wrap:wrap; gap:20px; margin-bottom:30px; }
+.report-text { flex:1; min-width:300px; }
+.report-image { flex:1; min-width:300px; max-height:400px; object-fit:contain; border-radius:8px; box-shadow:var(--shadow); }
+
+.info-boxes { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-bottom:20px; }
+.info-box { background:var(--white); border-radius:8px; padding:15px; box-shadow:var(--shadow); }
+.info-box h4 { color:var(--primary-dark); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+.info-box p { color:var(--dark-light); font-size:0.9rem; }
+.info-box ul { padding-left:20px; margin-top:10px; }
+.info-box li { font-size:0.85rem; margin-bottom:5px; }
+
+.warning-chart { width:100%; height:200px; margin:20px 0; background:rgba(231,76,60,0.1); border-radius:8px; padding:15px; border-left:4px solid var(--warning); }
+.warning-title { color:var(--warning); margin-bottom:15px; display:flex; align-items:center; gap:8px; }
+.warning-message { color:var(--dark-light); margin-bottom:15px; }
+.warning-level { display:flex; align-items:center; gap:10px; margin-top:15px; }
+.warning-bar { flex:1; height:20px; background:linear-gradient(to right,#f1c40f,#e67e22,#e74c3c); border-radius:10px; position:relative; }
+.warning-indicator { position:absolute; height:30px; width:4px; background:var(--dark); top:-5px; transform:translateX(-50%); }
+.warning-labels { display:flex; justify-content:space-between; margin-top:5px; font-size:0.8rem; color:var(--dark-light); }
+
+.compact-spaces { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
+.compact-space { background:var(--accent); color:white; padding:8px 12px; border-radius:20px; font-size:0.85rem; display:flex; align-items:center; gap:5px; }
+.compact-space i { font-size:0.8rem; }
+
+.accordion { margin:15px 0; }
+.accordion-item { border-radius:8px; overflow:hidden; margin-bottom:8px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
+.accordion-header { background-color:var(--primary-light); color:white; padding:12px 15px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; transition:var(--transition); }
+.accordion-header:hover { background-color:var(--primary); }
+.accordion-content { background-color:var(--white); max-height:0; overflow:hidden; transition:max-height 0.3s ease-out; }
+.accordion-content-inner { padding:15px; }
+.accordion-item.active .accordion-content { max-height:500px; }
+.accordion-icon { transition:transform 0.3s ease; }
+.accordion-item.active .accordion-icon { transform:rotate(180deg); }
+
+.objective-list { margin:20px 0; }
+.objective-item { display:flex; align-items:center; margin-bottom:10px; padding:10px; border-radius:8px; background-color:rgba(255,255,255,0.7); cursor:pointer; transition:var(--transition); }
+.objective-item:hover { background-color:rgba(39,174,96,0.1); }
+.objective-item.selected { background-color:rgba(39,174,96,0.2); border-left:4px solid var(--primary); }
+.objective-checkbox { margin-right:10px; width:20px; height:20px; cursor:pointer; }
+.objective-label { flex:1; font-size:0.95rem; }
+
+.space-characterization { margin-bottom:20px; padding:15px; background:rgba(52,152,219,0.1); border-radius:8px; border-left:4px solid var(--secondary); }
+.characterization-form { display:flex; flex-wrap:wrap; gap:10px; }
+.form-group { margin-bottom:0; flex:1; min-width:150px; }
+.form-group label { display:block; margin-bottom:5px; font-weight:500; color:var(--dark-light); font-size:0.8rem; }
+.form-control { width:100%; padding:8px 12px; border:1px solid var(--gray-light); border-radius:4px; font-family:'Poppins',sans-serif; font-size:0.8rem; transition:var(--transition); }
+.form-control:focus { outline:none; border-color:var(--secondary); box-shadow:0 0 0 3px rgba(52,152,219,0.2); }
+
+.btn-group { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+.btn-option { padding:6px 12px; border-radius:20px; font-size:0.8rem; cursor:pointer; transition:var(--transition); border:1px solid var(--gray-light); background-color:var(--white); color:var(--dark-light); position:relative; }
+.btn-option.selected { background-color:var(--primary); color:white; border-color:var(--primary); }
+.btn-option:hover::after { content:attr(title); position:absolute; bottom:100%; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.8); color:white; padding:5px 10px; border-radius:4px; font-size:0.7rem; white-space:nowrap; z-index:10; }
+
+.modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.9); overflow:auto; }
+.modal-content { margin:auto; display:block; max-width:90%; max-height:90%; margin-top:50px; }
+.close-modal { position:absolute; top:15px; right:35px; color:white; font-size:40px; font-weight:bold; transition:0.3s; cursor:pointer; }
+.close-modal:hover { color:var(--primary-light); }
+
+footer { width:100%; background:var(--dark); color:white; padding:20px 0; margin-top:40px; }
+.footer-content { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; }
+.footer-logo { font-weight:bold; margin-bottom:10px; }
+.footer-links { display:flex; gap:15px; margin-bottom:10px; }
+.footer-links a { color:white; text-decoration:none; transition:var(--transition); }
+.footer-links a:hover { color:var(--primary-light); }
+.footer-social { display:flex; gap:15px; }
+.footer-social a { color:white; font-size:1.2rem; transition:var(--transition); }
+.footer-social a:hover { color:var(--primary-light); transform:translateY(-3px); }
+.footer-copyright { width:100%; text-align:center; font-size:0.8rem; margin-top:15px; color:var(--gray-light); }
+.footer-separator { width:100%; height:1px; background:rgba(255,255,255,0.1); margin:15px 0; }
+
+.reset-btn { position:fixed; bottom:20px; right:20px; z-index:1000; background:var(--warning); color:white; border:none; border-radius:50%; width:60px; height:60px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; box-shadow:0 4px 10px rgba(0,0,0,0.2); cursor:pointer; transition:var(--transition); }
+.reset-btn:hover { transform:scale(1.1); background:var(--primary-dark); }
+
+@media (max-width:768px) {
+  h1 { font-size:2rem; }
+  .step-card { padding-left:15px; padding-right:15px; flex-direction:column; }
+  .step-number { width:50px; height:50px; left:-10px; top:-10px; font-size:1.3rem; }
+  .step-card h3 { padding-left:40px; }
+  .interactive-point { width:25px; height:25px; }
+  .interactive-point::after { width:10px; height:10px; }
+  .process-step { padding:0 10px; }
+  .process-icon { width:50px; height:50px; font-size:1.3rem; }
+  .process-label { font-size:0.9rem; max-width:80px; }
+  .current-step-image { height:100px; width:auto; margin-left:10px; }
+  .fixed-process-diagram { flex-direction:column; align-items:stretch; }
+  .process-steps-container { flex-direction:column; }
+  .process-diagram-container { width:100%; }
+  .info-boxes { grid-template-columns:1fr; }
+  .report-infographic { flex-direction:column; }
+  .footer-content { flex-direction:column; text-align:center; }
+  .footer-links, .footer-social { justify-content:center; }
+  .tooltip-sidebar { width:95%; max-width:none; }
+  .interactive-point { transform:translateX(-50%); }
+}
+
+/* Nuevos estilos añadidos para el gráfico radial */
+.radar-chart-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.radar-chart-title {
+  text-align: center;
+  color: var(--primary-dark);
+  margin-bottom: 15px;
+  font-family: 'Roboto Slab', serif;
+}
+
+#impactChart {
+  width: 100% !important;
+  height: auto !important;
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <header>
+    <h1>Guía Práctica: Espacios de Conservación</h1>
+    <p>Herramienta interactiva para identificar e implementar espacios de conservación en establecimientos productivos</p>
+  </header>
+
+  <div class="intro-text">
+    <h3><i class="fas fa-question-circle"></i> ¿Qué son los Espacios de Conservación?</h3>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <span>Ver definición completa</span>
+          <i class="fas fa-chevron-down accordion-icon"></i>
+        </div>
+        <div class="accordion-content">
+          <div class="accordion-content-inner">
+            <p>Los <strong>Espacios de Conservación</strong> son áreas naturales, seminaturales o diseñadas dentro de establecimientos productivos que cumplen dos funciones clave:</p>
+            <ol>
+              <li><strong>Conservar la biodiversidad</strong> nativa (flora, fauna, microorganismos)</li>
+              <li><strong>Mejorar la productividad</strong> mediante servicios ecosistémicos (polinización, control de plagas, protección de suelos)</li>
+            </ol>
+            <p>Esta plataforma te guiará paso a paso para <strong>identificar</strong> los espacios de conservación en tu propiedad y <strong>planificar</strong> su implementación.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="decision-section">
+    <h3><i class="fas fa-check-circle"></i> ¿Quieres implementar espacios de conservación?</h3>
+    <p>Si decides integrar la conservación de biodiversidad con tu producción, sigue estos pasos para identificar y planificar los espacios más adecuados para tu establecimiento.</p>
+    <button class="decision-btn" id="start-process"><i class="fas fa-play"></i> Comenzar el proceso</button>
+  </div>
+
+  <div class="container" id="process-container" style="display:none;">
+    <h2 class="section-title"><i class="fas fa-map-marked-alt"></i> Paso 1: Identifica tus espacios de conservación</h2>
+    
+    <div class="map-container">
+      <div class="video-container">
+        <video id="infografia-video" width="100%" poster="infografia.jpg">
+          <source src="video.mp4" type="video/mp4">
+          Tu navegador no soporta el elemento de video.
+        </video>
+        <div class="video-controls">
+          <button class="video-control-btn" id="replay-btn" style="display:none;"><i class="fas fa-redo"></i></button>
+          <button class="video-control-btn" id="stop-btn"><i class="fas fa-stop"></i></button>
+          <button class="video-control-btn" id="volume-btn"><i class="fas fa-volume-up"></i></button>
+          <button class="video-control-btn" id="skip-btn"><i class="fas fa-fast-forward"></i></button>
+        </div>
+      </div>
+      
+      <div class="interactive-point" style="top:18%;left:20%;" data-id="parque"><span class="point-label">Parque</span></div>
+      <div class="interactive-point" style="top:22%;left:28%;" data-id="refugio"><span class="point-label">Refugio</span></div>
+      <div class="interactive-point" style="top:40%;left:10%;" data-id="bordes"><span class="point-label">Bordes</span></div>
+      <div class="interactive-point" style="top:55%;left:30%;" data-id="franja"><span class="point-label">Franja</span></div>
+      <div class="interactive-point" style="top:70%;left:15%;" data-id="camino"><span class="point-label">Camino</span></div>
+      <div class="interactive-point" style="top:72%;left:65%;" data-id="vías férreas"><span class="point-label">Vías férreas</span></div>
+      <div class="interactive-point" style="top:48%;left:42%;" data-id="cortinas"><span class="point-label">Cortinas</span></div>
+      <div class="interactive-point" style="top:50%;left:60%;" data-id="cercos"><span class="point-label">Cercos</span></div>
+      <div class="interactive-point" style="top:30%;left:70%;" data-id="parche natural"><span class="point-label">Parche natural</span></div>
+      <div class="interactive-point" style="top:18%;left:75%;" data-id="área natural"><span class="point-label">Área natural</span></div>
+      <div class="interactive-point" style="top:60%;left:85%;" data-id="ribereños"><span class="point-label">Ribereños</span></div>
+      <div class="interactive-point" style="top:10%;left:50%;" data-id="bosque nativo"><span class="point-label">Bosque nativo</span></div>
+    </div>
+
+    <div class="space-highlight" id="selected-space" style="display:none;">
+      <h4><i class="fas fa-map-marker-alt"></i> Espacio seleccionado</h4>
+      <div id="space-info"></div>
+      <div class="space-visual" id="space-tags"></div>
+    </div>
+
+    <div class="selected-spaces-footer" id="selected-spaces-footer" style="display:none;">
+      <h4><i class="fas fa-check-circle"></i> Espacios de Conservación Seleccionados</h4>
+      <div class="selected-spaces-list" id="selected-spaces-list"></div>
+    </div>
+
+    <div class="steps-container">
+      <div class="fixed-process-diagram">
+        <div class="process-diagram-container">
+          <h2 class="section-title"><i class="fas fa-road"></i> Pasos para implementar tus espacios</h2>
+          <div class="process-diagram">
+            <div class="process-connector"></div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-1">1</div>
+              <div class="process-label">Identificación</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-2">2</div>
+              <div class="process-label">Objetivos</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-3">3</div>
+              <div class="process-label">Caracterización</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-4">4</div>
+              <div class="process-label">Plan de gestión</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-5">5</div>
+              <div class="process-label">Monitoreo</div>
+            </div>
+            <div class="process-step">
+              <div class="process-icon" id="process-icon-6">6</div>
+              <div class="process-label">Participación</div>
+            </div>
+          </div>
+        </div>
+        <img src="paso1.jpg" alt="Paso actual" class="current-step-image" id="current-step-image">
+      </div>
+
+      <div class="step-card" style="--bg-image:url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-1">1</div>
+        <div class="step-content">
+          <h3>Identificación de espacios</h3>
+          <p>Selecciona en el mapa interactivo los espacios de conservación presentes en tu establecimiento. Pueden ser:</p>
+          <ul>
+            <li>Áreas naturales existentes (bosques, humedales, pastizales)</li>
+            <li>Espacios seminaturales (bordes de cultivos, alambrados, caminos)</li>
+            <li>Áreas con potencial para convertirse en espacios de conservación</li>
+          </ul>
+          <div class="step-actions">
+            <button class="step-btn primary" id="confirm-space"><i class="fas fa-check"></i> Confirmar Espacios de Conservación seleccionados</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" id="step-2" style="display:none;--bg-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-2">2</div>
+        <div class="step-content">
+          <h3>Definición de objetivos</h3>
+          <p>Establece qué quieres lograr con los espacios de conservación en tu campo. Selecciona los objetivos que deseas priorizar:</p>
+          
+          <div class="objective-list">
+            <div class="objective-item" data-id="conservacion">
+              <input type="checkbox" class="objective-checkbox" id="obj-conservacion">
+              <label for="obj-conservacion" class="objective-label">Conservación de especies nativas</label>
+            </div>
+            <div class="objective-item" data-id="polinizacion">
+              <input type="checkbox" class="objective-checkbox" id="obj-polinizacion">
+              <label for="obj-polinizacion" class="objective-label">Mejora en polinización de cultivos</label>
+            </div>
+            <div class="objective-item" data-id="control-plagas">
+              <input type="checkbox" class="objective-checkbox" id="obj-control-plagas">
+              <label for="obj-control-plagas" class="objective-label">Control biológico de plagas</label>
+            </div>
+            <div class="objective-item" data-id="proteccion-suelo">
+              <input type="checkbox" class="objective-checkbox" id="obj-proteccion-suelo">
+              <label for="obj-proteccion-suelo" class="objective-label">Protección de suelos y agua</label>
+            </div>
+            <div class="objective-item" data-id="conectividad">
+              <input type="checkbox" class="objective-checkbox" id="obj-conectividad">
+              <label for="obj-conectividad" class="objective-label">Conectividad del paisaje</label>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button class="step-btn secondary" id="back-to-1"><i class="fas fa-arrow-left"></i> Volver al Paso 1</button>
+            <button class="step-btn primary" id="to-step-3"><i class="fas fa-arrow-right"></i> Continuar al Paso 3</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" id="step-3" style="display:none;--bg-image:url('https://images.unsplash.com/photo-1476231682828-37e571bc172f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-3">3</div>
+        <div class="step-content">
+          <h3>Caracterización (línea de base)</h3>
+          <p>Para cada espacio identificado, documenta sus características específicas:</p>
+          
+          <div id="characterization-container">
+            <div class="space-highlight">
+              <p>Selecciona los espacios en el Paso 1 para habilitar esta sección. La caracterización se adaptará automáticamente al tipo de espacio seleccionado.</p>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button class="step-btn secondary" id="back-to-2"><i class="fas fa-arrow-left"></i> Volver al Paso 2</button>
+            <button class="step-btn primary" id="to-step-4"><i class="fas fa-arrow-right"></i> Continuar al Paso 4</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" id="step-4" style="display:none;--bg-image:url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-4">4</div>
+        <div class="step-content">
+          <h3>Plan de gestión</h3>
+          
+          <div class="accordion">
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <span>Ver detalles del plan</span>
+                <i class="fas fa-chevron-down accordion-icon"></i>
+              </div>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">
+                  <p>Desarrolla un plan concreto para implementar los espacios de conservación:</p>
+                  <ul>
+                    <li>Define acciones específicas (restauración, manejo, señalización)</li>
+                    <li>Establece cronograma y recursos necesarios</li>
+                    <li>Analiza costo/beneficio de las acciones</li>
+                    <li>Comunica el plan a empleados y vecinos</li>
+                    <li>Identifica prácticas en áreas adyacentes para minimizar impacto</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button class="step-btn secondary" id="back-to-3"><i class="fas fa-arrow-left"></i> Volver al Paso 3</button>
+            <button class="step-btn primary" id="to-step-5"><i class="fas fa-arrow-right"></i> Continuar al Paso 5</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" id="step-5" style="display:none;--bg-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-5">5</div>
+        <div class="step-content">
+          <h3>Monitoreo</h3>
+          
+          <div class="accordion">
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <span>Ver detalles de monitoreo</span>
+                <i class="fas fa-chevron-down accordion-icon"></i>
+              </div>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">
+                  <p>Realiza seguimiento del plan de gestión:</p>
+                  <ul>
+                    <li>Evalúa las especies y ambientes en relación con la línea de base</li>
+                    <li>Mide la efectividad de las acciones implementadas</li>
+                    <li>Realiza ajustes y adaptaciones según resultados</li>
+                    <li>Documenta los cambios y aprendizajes</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button class="step-btn secondary" id="back-to-4"><i class="fas fa-arrow-left"></i> Volver al Paso 4</button>
+            <button class="step-btn primary" id="to-step-6"><i class="fas fa-arrow-right"></i> Continuar al Paso 6</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card" id="step-6" style="display:none;--bg-image:url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')">
+        <div class="step-number" id="step-number-6">6</div>
+        <div class="step-content">
+          <h3>Participación social</h3>
+          
+          <div class="accordion">
+            <div class="accordion-item">
+              <div class="accordion-header">
+                <span>Ver estrategias de participación</span>
+                <i class="fas fa-chevron-down accordion-icon"></i>
+              </div>
+              <div class="accordion-content">
+                <div class="accordion-content-inner">
+                  <p>Involucra a otros actores en el proceso:</p>
+                  <ul>
+                    <li>Promueve la participación de productores vecinos</li>
+                    <li>Establece alianzas con la comunidad, academia o gobierno</li>
+                    <li>Evalúa inclusión en legislaciones de áreas de conservación</li>
+                    <li>Identifica nuevas áreas con potencial para conectar</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="step-actions">
+            <button class="step-btn secondary" id="back-to-5"><i class="fas fa-arrow-left"></i> Volver al Paso 5</button>
+            <button class="step-btn primary" id="finish-process"><i class="fas fa-check-circle"></i> Finalizar proceso</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-container" id="report-container">
+        <h3><i class="fas fa-file-alt"></i> Informe Final: Espacios de Conservación Seleccionados</h3>
+        
+        <div class="report-infographic">
+          <div class="report-text">
+            <div class="report-section">
+              <h4><i class="fas fa-check-circle"></i> Resumen de Espacios Seleccionados</h4>
+              <div class="compact-spaces" id="compact-spaces-list"></div>
+            </div>
+            
+            <div class="report-section">
+              <h4><i class="fas fa-bullseye"></i> Objetivos Seleccionados</h4>
+              <div id="selected-objectives-list" class="compact-spaces"></div>
+            </div>
+            
+            <div class="report-section">
+              <h4><i class="fas fa-ruler-combined"></i> Características registradas</h4>
+              <div id="space-characteristics"></div>
+            </div>
+          </div>
+          
+          <img src="infografia.jpg" alt="Infografía con espacios seleccionados" class="report-image" id="report-infographic-image">
+        </div>
+        
+        <div class="info-boxes">
+          <div class="info-box">
+            <h4><i class="fas fa-exclamation-triangle"></i> Nivel de atención requerido</h4>
+            <p>Según las características registradas, estos son los aspectos que requieren mayor atención:</p>
+            <div class="warning-bar">
+              <div class="warning-indicator" id="warning-indicator" style="left:30%;"></div>
+            </div>
+            <div class="warning-labels">
+              <span>Bajo</span>
+              <span>Moderado</span>
+              <span>Alto</span>
+              <span>Crítico</span>
+            </div>
+            <p id="space-warning-message" style="margin-top:10px;font-size:0.9rem;"></p>
+          </div>
+          
+          <div class="info-box">
+            <h4><i class="fas fa-route"></i> Consideraciones sobre corredores</h4>
+            <p>Según el informe INTA, los corredores biológicos requieren atención especial:</p>
+            <div class="warning-bar">
+              <div class="warning-indicator" id="corridor-indicator" style="left:50%;"></div>
+            </div>
+            <div class="warning-labels">
+              <span>Baja conectividad</span>
+              <span>Conectividad media</span>
+              <span>Buena conectividad</span>
+              <span>Excelente conectividad</span>
+            </div>
+            <p id="corridor-warning-message" style="margin-top:10px;font-size:0.9rem;"></p>
+          </div>
+          
+          <div class="info-box">
+            <h4><i class="fas fa-biohazard"></i> Amenaza de especies exóticas</h4>
+            <p>Evaluación del riesgo potencial de especies exóticas invasoras:</p>
+            <div class="warning-bar">
+              <div class="warning-indicator" id="exotic-indicator" style="left:20%;"></div>
+            </div>
+            <div class="warning-labels">
+              <span>Bajo riesgo</span>
+              <span>Riesgo medio</span>
+              <span>Alto riesgo</span>
+              <span>Invasoras</span>
+            </div>
+            <p id="exotic-warning-message" style="margin-top:10px;font-size:0.9rem;"></p>
+          </div>
+          
+          <div class="info-box">
+            <h4><i class="fas fa-calendar-check"></i> Cronograma sugerido</h4>
+            <p>Recomendaciones para implementación según temporada:</p>
+            <div class="warning-bar">
+              <div class="warning-indicator" id="timing-indicator" style="left:10%;"></div>
+            </div>
+            <div class="warning-labels">
+              <span>Invierno</span>
+              <span>Primavera</span>
+              <span>Verano</span>
+              <span>Otoño</span>
+            </div>
+            <p id="timing-message" style="margin-top:10px;font-size:0.9rem;"></p>
+          </div>
+        </div>
+        
+        <!-- Contenedor para el gráfico radial -->
+        <div class="radar-chart-container">
+          <h4 class="radar-chart-title"><i class="fas fa-chart-radar"></i> Impacto Comparativo de tu Selección</h4>
+          <canvas id="impactChart"></canvas>
+        </div>
+        
+        <div class="report-section">
+          <h4><i class="fas fa-clipboard-check"></i> Recomendaciones según tus Objetivos</h4>
+          <div id="objective-recommendations"></div>
+        </div>
+        
+        <div class="report-section">
+          <h4><i class="fas fa-file-pdf"></i> Informe Completo</h4>
+          <p>Para más información sobre los beneficios y metodología de implementación de espacios de conservación, consulta el <a href="https://repositorio.inta.gob.ar/bitstream/handle/20.500.12123/17068/INTA_CRBsAsNorte_EEADeltadelParana_Fracassi_N_Espacios_de_Conservacion_de_Agroecosistemas%20.pdf?sequence=1&isAllowed=y" target="_blank">informe técnico completo</a> del INTA.</p>
+        </div>
+        
+        <div class="step-actions" style="margin-top:30px;">
+          <button class="step-btn primary" id="download-report"><i class="fas fa-download"></i> Descargar Informe</button>
+          <button class="step-btn secondary" id="restart-process"><i class="fas fa-redo"></i> Reiniciar Proceso</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tooltip-sidebar" id="tooltip-sidebar">
+    <div class="close-btn" id="close-sidebar-btn"><i class="fas fa-times"></i></div>
+    <h3 id="tooltip-title"></h3>
+    <div class="tooltip-subtitle"><i class="fas fa-tag"></i> <span id="tooltip-category"></span></div>
+    <div id="tooltip-image-container" style="margin-bottom:15px;text-align:center;">
+      <video id="tooltip-video" width="100%" controls style="border-radius:8px;box-shadow:0 4px 8px rgba(0,0,0,0.1);display:none;">Tu navegador no soporta el elemento de video.</video>
+    </div>
+    <p id="tooltip-text"></p>
+    
+    <div class="tooltip-details">
+      <h4><i class="fas fa-list-ul"></i> Características principales</h4>
+      <p id="tooltip-characteristics"></p>
+    </div>
+    
+    <div class="tooltip-details">
+      <h4><i class="fas fa-tractor"></i> Beneficios para el sistema productivo</h4>
+      <ul id="tooltip-benefits-production"></ul>
+    </div>
+    
+    <div class="tooltip-details">
+      <h4><i class="fas fa-leaf"></i> Beneficios para la naturaleza</h4>
+      <ul id="tooltip-benefits-nature"></ul>
+    </div>
+    
+    <div class="tooltip-footer">
+      <a href="#" class="tooltip-link" id="tooltip-link" target="_blank"><i class="fas fa-external-link-alt"></i> Más información</a>
+    </div>
+  </div>
+
+  <div id="imageModal" class="modal">
+    <span class="close-modal" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <button class="reset-btn" id="reset-all-btn" title="Reiniciar todo"><i class="fas fa-sync-alt"></i></button>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">INTA - Espacios de Conservación</div>
+      <div class="footer-links">
+        <a href="#">Inicio</a>
+        <a href="#">Documentación</a>
+        <a href="#">Metodología</a>
+        <a href="#">Casos de estudio</a>
+        <a href="#">Contacto</a>
+      </div>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+      </div>
+      <div class="footer-separator"></div>
+      <div class="footer-copyright">© 2025 INTA ARGENTINA. Todos los derechos reservados. | Diseño: DAMIAN VOGLINO</div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Datos para los espacios de conservación con videos
+    const dataMap = {
+      parque: {
+        titulo: "Parques o áreas multifunción",
+        categoria: "Espacio Seminatural | Areal",
+        texto: "Áreas pequeñas (0,25-2 ha) integradas en el establecimiento con vegetación natural o cultivada que cumplen múltiples funciones ecológicas y productivas.",
+        caracteristicas: "Forma poligonal. Ubicación: casco, vivero, monte frutal, huerta. Combinación de especies vegetales nativas o exóticas que pueden albergar fauna nativa con manejo especial.",
+        beneficiosProduccion: [
+          "Provisión de flora de interés apícola (polen, néctar, propóleos)",
+          "Refugio para insectos benéficos (depredadores de plagas, parasitoides, polinizadores)",
+          "Bienestar animal por provisión de sombra natural",
+          "Reserva de plantas y semillas de flora nativa de interés forrajero, medicinal, alimenticio"
+        ],
+        beneficiosNaturaleza: [
+          "Provisión de hábitat para insectos, aves y mamíferos pequeños",
+          "Reservorio de flora nativa, fuente de diversidad genética",
+          "Posaderos para aves que colaboran en dispersión de semillas",
+          "Provisión de recursos florales para polinizadores"
+        ],
+        link: "https://www.argentina.gob.ar/inta",
+        video: "parque.mp4"
+      },
+      refugio: {
+        titulo: "Parche Seminatural (Refugio)",
+        categoria: "Espacio Seminatural | Areal",
+        texto: "Área pequeña (<1 ha) dentro del establecimiento con vegetación espontánea nativa o exótica que proporciona refugio a la fauna benéfica.",
+        caracteristicas: "Forma poligonal. Ubicación: taperas, aguadas, tajamares, tanques australianos. Vegetación espontánea que se mantiene sin intervención o con manejo mínimo.",
+        beneficiosProduccion: [
+          "Distracción de fauna silvestre sobre cultivos principales",
+          "Provisión de refugios para insectos benéficos",
+          "Reserva de vegetación para forrajeo en épocas críticas",
+          "Control natural de plagas por presencia de depredadores"
+        ],
+        beneficiosNaturaleza: [
+          "Provisión de ambientes de resguardo temporal para fauna",
+          "Hábitat para insectos y pequeños vertebrados",
+          "Conservación de vegetación espontánea",
+          "Sitios de reproducción para algunas especies"
+        ],
+        link: "https://inta.gob.ar/documentos/refugios",
+        video: "refugio.mp4"
+      },
+      bordes: {
+        titulo: "Bordes de cultivo o alambrado",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Franja de vegetación nativa o espontánea en bordes de cultivos o alambrados que generan hábitat y conectividad para la biodiversidad.",
+        caracteristicas: "Forma lineal. Ancho: 3-6 m. Ubicación: bordes perimetrales o callejones centrales entre lotes. Pueden sembrarse con especies entomófilas nativas y no nativas.",
+        beneficiosProduccion: [
+          "Separación de ambientes productivos",
+          "Presencia de especies entomófilas que atraen polinizadores",
+          "Control de erosión por reducción de escorrentía",
+          "Filtrado de sedimentos y contaminantes de campos adyacentes"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad entre hábitats fragmentados",
+          "Provisión de recursos florales para polinizadores",
+          "Hábitat lineal para insectos y pequeños vertebrados",
+          "Corredor para movimiento de especies entre áreas"
+        ],
+        link: "https://inta.gob.ar/gestion-bordes",
+        video: "bordes.mp4"
+      },
+      franja: {
+        titulo: "Franja vegetada o natural",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Franjas con vegetación espontánea o implantada en lotes de cultivos que aportan biodiversidad y servicios ecosistémicos.",
+        caracteristicas: "Forma lineal. Ancho: 6-12 m, longitud: 200-400 m. Ubicación: límites o interior de lotes, asociadas a zonas de drenaje. Pueden tener vegetación espontánea o implantada con especies forrajeras y melíferas.",
+        beneficiosProduccion: [
+          "Reducción del tamaño de lotes para manejo más eficiente",
+          "Atracción de polinizadores que incrementan rendimientos",
+          "Control natural de plagas por presencia de depredadores",
+          "Protección contra vientos y reducción de erosión"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad entre espacios de conservación",
+          "Provisión de recursos florales para polinizadores",
+          "Hábitat para insectos benéficos",
+          "Disminución de la fragmentación del paisaje"
+        ],
+        link: "https://inta.gob.ar/franjas-biodiversas",
+        video: "franja.mp4"
+      },
+      camino: {
+        titulo: "Bordes de caminos rurales",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Veredas o préstamos de caminos con vegetación espontánea que pueden formar pequeños humedales temporarios y funcionan como corredores lineales clave.",
+        caracteristicas: "Forma lineal. Ancho variable: 2-40 m. Ubicación: espacio entre cuneta y alambrados. Pueden enriquecerse con especies nativas acordes al ambiente. Según relieve, pueden formar humedales temporarios con vegetación ribereña.",
+        beneficiosProduccion: [
+          "Protección de la infraestructura vial",
+          "Control de erosión por desaceleración del agua",
+          "Filtrado de aguas de escorrentía",
+          "Posible aprovechamiento de flora melífera"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad lineal a lo largo de grandes distancias",
+          "Formación de microhumedales temporarios",
+          "Refugio para especies asociadas a ambientes acuáticos",
+          "Corredor para dispersión de flora y fauna"
+        ],
+        link: "https://aacrus.org.ar",
+        video: "camino.mp4"
+      },
+      "vías férreas": {
+        titulo: "Terraplén o vías férreas",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Franja vegetada a lo largo de las vías del tren que funcionan como refugio para fauna y tienen potencial como pasafauna para conectar hábitats fragmentados.",
+        caracteristicas: "Forma lineal. Longitud considerable, atravesando grandes trayectos. Vegetación espontánea nativa. Alcantarillas funcionan como pasafaunas y refugios (dormideros) para varias especies.",
+        beneficiosProduccion: [
+          "Mantenimiento de infraestructura ferroviaria",
+          "Control de erosión en terraplenes",
+          "Protección contra vientos",
+          "Valor paisajístico"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad a escala regional",
+          "Reservorios de vegetación nativa en paisajes agrícolas",
+          "Pasafaunas en alcantarillas",
+          "Refugio para especies en movimiento"
+        ],
+        link: "https://inta.gob.ar/territorios-ferreos",
+        video: "vías férreas.mp4"
+      },
+      cortinas: {
+        titulo: "Cortinas forestales",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Alineaciones de árboles que actúan como conectores estructurales y protección frente al viento, con valor ecológico según su diseño y composición.",
+        caracteristicas: "Forma lineal. Ubicación: en una sola hilara o franja, nativas o exóticas. En zonas de bosque nativo pueden aportar a la conectividad para algunas especies, principalmente insectos y aves.",
+        beneficiosProduccion: [
+          "Protección de cultivos contra vientos",
+          "Reducción de la erosión eólica",
+          "Sombra para animales domésticos",
+          "Producción forestal secundaria"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad estructural en paisajes agrícolas",
+          "Hábitat para aves e insectos",
+          "Corredor para movimiento de especies voladoras",
+          "Refugio temporal para fauna en desplazamiento"
+        ],
+        link: "https://inta.gob.ar/cortinas",
+        video: "cortinas.mp4"
+      },
+      cercos: {
+        titulo: "Cercos vivos",
+        categoria: "Espacio Seminatural | Corredor Lineal",
+        texto: "Plantaciones lineales de arbustos o herbáceas que delimitan parcelas y aportan biodiversidad al paisaje agrícola.",
+        caracteristicas: "Forma lineal. Plantaciones de especies herbáceas o arbustivas en líneas, muy cercanas entre sí. Pueden ser nativas (ej. falso guayabo) en zonas con bosque nativo, aportando conectividad para insectos y aves.",
+        beneficiosProduccion: [
+          "Delimitación de parcelas y potreros",
+          "Protección de montes frutales y huertas",
+          "Flora para apicultura",
+          "Producción de frutos para consumo humano o animal"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad lineal en escala local",
+          "Recursos florales para polinizadores",
+          "Hábitat para insectos benéficos",
+          "Fuente de alimento para aves frugívoras"
+        ],
+        link: "https://inta.gob.ar/cercos",
+        video: "cercos.mp4"
+      },
+      "parche natural": {
+        titulo: "Parche Natural (Refugio)",
+        categoria: "Espacio Natural | Areal",
+        texto: "Área pequeña (<1-5 ha) de vegetación nativa (relicto del ambiente original) que persiste en la matriz productiva, pudiendo coincidir con humedales temporarios.",
+        caracteristicas: "Forma poligonal. Ubicación: parte de un establecimiento donde se mantiene vegetación natural, se restaura o enriquece con plantas nativas. Puede ser sitio con rendimiento limitado por condiciones edáficas.",
+        beneficiosProduccion: [
+          "Conservación de suelos en áreas marginales",
+          "Reserva de flora nativa de interés forrajero o medicinal",
+          "Control natural de plagas por presencia de depredadores",
+          "Protección de fuentes de agua"
+        ],
+        beneficiosNaturaleza: [
+          "Conservación de vegetación nativa relictual",
+          "Hábitat para especies asociadas a ambientes originales",
+          "Nodos de biodiversidad en paisajes agrícolas",
+          "Fuente de semillas para restauración"
+        ],
+        link: "https://inta.gob.ar/humedales",
+        video: "bosque nativo.mp4"
+      },
+      "área natural": {
+        titulo: "Área Natural",
+        categoria: "Espacio Natural | Areal",
+        texto: "Superficies mayores a 5 hectáreas que conservan el ambiente original de la ecorregión, pudiendo ser delimitadas como áreas protegidas o con manejo especial.",
+        caracteristicas: "Forma poligonal. Combinación de parches de diferentes ambientes y tamaños. Se mantiene vegetación natural, se restaura y/o enriquece con plantas nativas. Ejemplos: lagunas, arroyos, bañados, mogotes, bosques o pastizales originales.",
+        beneficiosProduccion: [
+          "Conservación de recursos hídricos",
+          "Reserva genética de especies nativas útiles",
+          "Posibilidades de ecoturismo y educación ambiental",
+          "Provisión de servicios ecosistémicos clave"
+        ],
+        beneficiosNaturaleza: [
+          "Conservación de biodiversidad a escala de paisaje",
+          "Hábitat para especies con mayores requerimientos",
+          "Núcleos para restauración ecológica",
+          "Mantenimiento de procesos ecológicos a gran escala"
+        ],
+        link: "https://inta.gob.ar/areas-naturales",
+        video: "área natural.mp4"
+      },
+      ribereños: {
+        titulo: "Bordes ribereños",
+        categoria: "Espacio Natural | Corredor Lineal",
+        texto: "Franjas vegetadas junto a arroyos, ríos o cuerpos de agua que regulan escorrentía, protegen de la erosión y ofrecen hábitat acuático y terrestre.",
+        caracteristicas: "Forma lineal. Ubicación: bordes de cursos o cuerpos de agua (franja ribereña). Vegetación espontánea adaptada a condiciones de humedad. Escala variable según características del curso de agua.",
+        beneficiosProduccion: [
+          "Protección de infraestructura contra erosión",
+          "Mantenimiento de calidad de aguas para uso productivo",
+          "Conservación de pesquerías",
+          "Filtrado de aguas residuales y de escorrentía"
+        ],
+        beneficiosNaturaleza: [
+          "Conservación de ambientes acuáticos y ribereños",
+          "Hábitat para especies asociadas a cuerpos de agua",
+          "Corredores lineales de alta diversidad biológica",
+          "Regulación de ciclos hidrológicos"
+        ],
+        link: "https://inta.gob.ar/riberenos",
+        video: "ribereños.mp4"
+      },
+      "bosque nativo": {
+        titulo: "Franjas de bosque nativo",
+        categoria: "Espacio Natural | Corredor Lineal",
+        texto: "Remanentes lineales de bosque autóctono que mantienen la conectividad del paisaje, especialmente importantes en regiones con alta fragmentación.",
+        caracteristicas: "Forma lineal. Largo promedio 1800 m, superficie promedio 8 ha, ancho promedio 100 m. Ubicación: remanentes del cambio de uso del suelo a agricultura, generalmente en bordes de propiedades o cursos de agua.",
+        beneficiosProduccion: [
+          "Protección de cultivos contra vientos",
+          "Conservación de suelos en pendientes",
+          "Producción forestal sostenible",
+          "Posibilidades de turismo educativo"
+        ],
+        beneficiosNaturaleza: [
+          "Conectividad entre fragmentos boscosos",
+          "Hábitat para especies forestales",
+          "Conservación de flora y fauna especializada",
+          "Corredores para especies con baja movilidad"
+        ],
+        link: "https://inta.gob.ar/bosque-nativo",
+        video: "bosque nativo.mp4"
+      }
+    };
+
+    // Variables para almacenar los espacios seleccionados
+    let selectedSpaces = [];
+    let selectedObjectives = [];
+    let spaceCharacteristics = [];
+    let clickedPoint = null;
+    let hoverTimeout = null;
+    let videoMuted = false;
+
+    // Mostrar tooltip con información del espacio
+    function showTooltip(evt, fromHover = false) {
+      const key = evt.target.dataset.id;
+      const data = dataMap[key];
+      if (!data) return;
+      
+      if (fromHover && clickedPoint) return;
+      
+      document.getElementById('tooltip-title').textContent = data.titulo;
+      document.getElementById('tooltip-category').textContent = data.categoria;
+      document.getElementById('tooltip-text').textContent = data.texto;
+      document.getElementById('tooltip-characteristics').textContent = data.caracteristicas;
+
+      const videoContainer = document.getElementById('tooltip-image-container');
+      const videoElement = document.getElementById('tooltip-video');
+      if (data.video) {
+        videoElement.src = data.video;
+        videoElement.style.display = 'block';
+        videoElement.play();
+      } else {
+        videoElement.style.display = 'none';
+      }
+
+      document.getElementById('tooltip-benefits-production').innerHTML = '';
+      document.getElementById('tooltip-benefits-nature').innerHTML = '';
+
+      data.beneficiosProduccion.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        document.getElementById('tooltip-benefits-production').appendChild(li);
+      });
+
+      data.beneficiosNaturaleza.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        document.getElementById('tooltip-benefits-nature').appendChild(li);
+      });
+
+      document.getElementById('tooltip-link').href = data.link;
+      
+      // Ajustar posición del tooltip según la posición del punto
+      const pointRect = evt.target.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      
+      if (pointRect.left < viewportWidth / 2) {
+        // Punto en el lado izquierdo - mostrar tooltip más a la derecha
+        document.getElementById('tooltip-sidebar').style.left = '60%';
+      } else {
+        // Punto en el lado derecho - mostrar tooltip más a la izquierda
+        document.getElementById('tooltip-sidebar').style.left = '40%';
+      }
+      
+      document.getElementById('tooltip-sidebar').classList.add("visible");
+      document.body.style.overflow = 'hidden';
+
+      if (!fromHover) {
+        clickedPoint = key;
+      }
+    }
+
+    // Ocultar tooltip
+    function hideTooltip(fromHover = false) {
+      if (fromHover && clickedPoint) return;
+      
+      const videoElement = document.getElementById('tooltip-video');
+      videoElement.pause();
+      document.getElementById('tooltip-sidebar').classList.remove("visible");
+      document.body.style.overflow = 'auto';
+      
+      if (!fromHover) {
+        clickedPoint = null;
+      }
+    }
+
+    // Manejar selección de espacios
+    function toggleSpaceSelection(spaceId) {
+      const index = selectedSpaces.indexOf(spaceId);
+      const point = document.querySelector(`.interactive-point[data-id="${spaceId}"]`);
+      
+      if (index === -1) {
+        selectedSpaces.push(spaceId);
+        point.classList.add('selected');
+      } else {
+        selectedSpaces.splice(index, 1);
+        point.classList.remove('selected');
+      }
+      updateSelectedSpacesList();
+    }
+
+    // Actualizar la lista de espacios seleccionados
+    function updateSelectedSpacesList() {
+      const selectedSpacesList = document.getElementById('selected-spaces-list');
+      selectedSpacesList.innerHTML = '';
+      
+      if (selectedSpaces.length === 0) {
+        document.getElementById('selected-spaces-footer').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('selected-spaces-footer').style.display = 'block';
+      
+      selectedSpaces.forEach(spaceId => {
+        const data = dataMap[spaceId];
+        if (!data) return;
+        
+        const spaceTag = document.createElement('div');
+        spaceTag.className = 'selected-space-tag';
+        spaceTag.innerHTML = `<i class="fas fa-check"></i>${data.titulo}`;
+        selectedSpacesList.appendChild(spaceTag);
+      });
+    }
+
+    // Manejar selección de objetivos
+    function toggleObjectiveSelection(objectiveId) {
+      const index = selectedObjectives.indexOf(objectiveId);
+      const item = document.querySelector(`.objective-item[data-id="${objectiveId}"]`);
+      
+      if (index === -1) {
+        selectedObjectives.push(objectiveId);
+        item.classList.add('selected');
+      } else {
+        selectedObjectives.splice(index, 1);
+        item.classList.remove('selected');
+      }
+    }
+
+    // Generar formularios de caracterización simplificados para cada espacio seleccionado
+    function generateCharacterizationForms() {
+      const container = document.getElementById('characterization-container');
+      container.innerHTML = '';
+      
+      if (selectedSpaces.length === 0) {
+        container.innerHTML = '<div class="space-highlight"><p>No hay espacios seleccionados para caracterizar. Por favor selecciona al menos un espacio en el Paso 1.</p></div>';
+        return;
+      }
+      
+      selectedSpaces.forEach(spaceId => {
+        const data = dataMap[spaceId];
+        if (!data) return;
+        
+        const isLinear = data.categoria.includes("Lineal");
+        const isAreal = data.categoria.includes("Areal");
+        
+        const formDiv = document.createElement('div');
+        formDiv.className = 'space-characterization';
+        
+        let formHTML = `
+          <h5><i class="fas fa-map-marker-alt"></i> ${data.titulo}</h5>
+          <div class="characterization-form">
+            <div class="form-group">
+              <label for="tamano-${spaceId}">Tamaño aproximado:</label>
+              <div class="btn-group" id="tamano-group-${spaceId}">
+                <button type="button" class="btn-option" data-value="pequeno" title="Menos de 1 ha para espacios lineales, menos de 0.5 ha para áreas">Pequeño</button>
+                <button type="button" class="btn-option" data-value="mediano" title="1-5 ha para espacios lineales, 0.5-2 ha para áreas">Mediano</button>
+                ${isLinear ? '' : '<button type="button" class="btn-option" data-value="grande" title="Más de 5 ha para espacios lineales, más de 2 ha para áreas">Grande</button>'}
+              </div>
+              <input type="hidden" id="tamano-${spaceId}" value="">
+            </div>
+            
+            <div class="form-group">
+              <label for="especies-${spaceId}">Composición de especies:</label>
+              <div class="btn-group" id="especies-group-${spaceId}">
+                <button type="button" class="btn-option" data-value="nativas" title="Más del 70% de especies nativas">Nativas</button>
+                <button type="button" class="btn-option" data-value="mezcla" title="30-70% de especies nativas">Mixtas</button>
+                <button type="button" class="btn-option" data-value="exoticas" title="Menos del 30% de especies nativas">Exóticas</button>
+              </div>
+              <input type="hidden" id="especies-${spaceId}" value="">
+            </div>
+            
+            <div class="form-group">
+              <label for="integracion-${spaceId}">Integración con producción:</label>
+              <div class="btn-group" id="integracion-group-${spaceId}">
+                <button type="button" class="btn-option" data-value="alta" title="Provee beneficios directos y frecuentes al sistema productivo">Alta</button>
+                <button type="button" class="btn-option" data-value="media" title="Provee algunos beneficios al sistema productivo">Media</button>
+                <button type="button" class="btn-option" data-value="baja" title="Provee pocos o ningún beneficio directo al sistema productivo">Baja</button>
+              </div>
+              <input type="hidden" id="integracion-${spaceId}" value="">
+            </div>
+            
+            <div class="form-group">
+              <label for="condicion-${spaceId}">Estado de conservación:</label>
+              <div class="btn-group" id="condicion-group-${spaceId}">
+                <button type="button" class="btn-option" data-value="bueno" title="Estructura y composición de especies en buen estado, poca perturbación">Bueno</button>
+                <button type="button" class="btn-option" data-value="regular" title="Alguna degradación pero con potencial de recuperación">Regular</button>
+                <button type="button" class="btn-option" data-value="degradado" title="Alta degradación, requiere intervención para recuperarse">Degradado</button>
+              </div>
+              <input type="hidden" id="condicion-${spaceId}" value="">
+            </div>
+          </div>
+        `;
+        
+        formDiv.innerHTML = formHTML;
+        container.appendChild(formDiv);
+        
+        setupOptionButtons(spaceId);
+      });
+    }
+
+    // Configurar eventos para los botones de opción
+    function setupOptionButtons(spaceId) {
+      const optionGroups = [
+        `tamano-group-${spaceId}`,
+        `especies-group-${spaceId}`,
+        `integracion-group-${spaceId}`,
+        `condicion-group-${spaceId}`
+      ];
+      
+      optionGroups.forEach(groupId => {
+        const buttons = document.getElementById(groupId).querySelectorAll('.btn-option');
+        buttons.forEach(button => {
+          button.addEventListener('click', function() {
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+            const inputId = groupId.replace('-group-', '-');
+            document.getElementById(inputId).value = this.dataset.value;
+          });
+        });
+      });
+    }
+
+    // Guardar características de los espacios
+    function saveSpaceCharacteristics() {
+      spaceCharacteristics = [];
+      
+      selectedSpaces.forEach(spaceId => {
+        const data = dataMap[spaceId];
+        if (!data) return;
+        
+        const size = document.getElementById(`tamano-${spaceId}`).value;
+        const species = document.getElementById(`especies-${spaceId}`).value;
+        const integration = document.getElementById(`integracion-${spaceId}`).value;
+        const condition = document.getElementById(`condicion-${spaceId}`).value;
+        
+        if (!size || !species || !integration || !condition) {
+          alert(`Por favor completa todas las características para el espacio: ${data.titulo}`);
+          throw new Error("Características incompletas");
+        }
+        
+        const isLinear = data.categoria.includes("Lineal");
+        const shape = isLinear ? "lineal" : "areal";
+        
+        spaceCharacteristics.push({
+          space: data.titulo,
+          spaceId: spaceId,
+          size: getSizeLabel(size),
+          sizeValue: size,
+          shape: isLinear ? "Lineal" : "Areal",
+          shapeValue: shape,
+          species: getSpeciesLabel(species),
+          speciesValue: species,
+          integration: getIntegrationLabel(integration),
+          integrationValue: integration,
+          condition: getConditionLabel(condition),
+          conditionValue: condition
+        });
+      });
+    }
+
+    // Generar el informe final
+    function generateFinalReport() {
+      const compactSpacesList = document.getElementById('compact-spaces-list');
+      const selectedObjectivesList = document.getElementById('selected-objectives-list');
+      const spaceCharacteristicsList = document.getElementById('space-characteristics');
+      const objectiveRecommendations = document.getElementById('objective-recommendations');
+      const infographicImage = document.getElementById('report-infographic-image');
+      
+      compactSpacesList.innerHTML = '';
+      selectedObjectivesList.innerHTML = '';
+      spaceCharacteristicsList.innerHTML = '';
+      objectiveRecommendations.innerHTML = '';
+      
+      selectedSpaces.forEach(spaceId => {
+        const data = dataMap[spaceId];
+        if (!data) return;
+        
+        const spaceTag = document.createElement('div');
+        spaceTag.className = 'compact-space';
+        spaceTag.innerHTML = `<i class="fas fa-map-marker-alt"></i>${data.titulo}`;
+        compactSpacesList.appendChild(spaceTag);
+      });
+      
+      const objectivesMap = {
+        'conservacion': 'Conservación de especies nativas',
+        'polinizacion': 'Mejora en polinización de cultivos',
+        'control-plagas': 'Control biológico de plagas',
+        'proteccion-suelo': 'Protección de suelos y agua',
+        'conectividad': 'Conectividad del paisaje'
+      };
+      
+      selectedObjectives.forEach(objId => {
+        const objTag = document.createElement('div');
+        objTag.className = 'compact-space';
+        objTag.innerHTML = `<i class="fas fa-bullseye"></i>${objectivesMap[objId]}`;
+        selectedObjectivesList.appendChild(objTag);
+      });
+      
+      if (spaceCharacteristics.length > 0) {
+        let characteristicsHTML = '';
+        
+        spaceCharacteristics.forEach(char => {
+          const data = dataMap[char.spaceId];
+          const isCorridor = data.categoria.includes("Corredor");
+          
+          characteristicsHTML += `
+            <div class="space-characterization">
+              <h5><i class="fas ${isCorridor ? 'fa-route' : 'fa-map-marked-alt'}"></i> ${char.space}</h5>
+              <div class="characterization-details">
+                <p><strong>Tipo:</strong> ${data.categoria}</p>
+                <p><strong>Tamaño:</strong> ${char.size}</p>
+                <p><strong>Forma:</strong> ${char.shape}</p>
+                <p><strong>Composición de especies:</strong> ${char.species}</p>
+                <p><strong>Integración con producción:</strong> ${char.integration}</p>
+                <p><strong>Estado de conservación:</strong> ${char.condition}</p>
+              </div>
+            </div>
+          `;
+        });
+        
+        spaceCharacteristicsList.innerHTML = characteristicsHTML;
+        generateWarningChart();
+        
+        if (selectedSpaces.some(id => dataMap[id].categoria.includes("Corredor"))) {
+          generateCorridorWarning();
+        }
+        
+        generateExoticSpeciesWarning();
+        generateTimingRecommendation();
+      }
+      
+      updateInfographicImage(infographicImage);
+      generateObjectiveRecommendations(objectiveRecommendations);
+      createImpactChart();
+      
+      document.getElementById('report-container').style.display = 'block';
+      document.getElementById('report-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Actualizar la imagen de la infografía con los espacios seleccionados
+    function updateInfographicImage(imageElement) {
+      imageElement.src = "infografia.jpg";
+    }
+
+    // Generar gráfico de advertencia basado en características
+    function generateWarningChart() {
+      let warningLevel = 0;
+      let warningCount = 0;
+      
+      spaceCharacteristics.forEach(char => {
+        if (char.conditionValue === "degradado") {
+          warningLevel += 3;
+          warningCount++;
+        } else if (char.conditionValue === "regular") {
+          warningLevel += 1;
+          warningCount++;
+        }
+        
+        if (char.speciesValue === "exoticas") {
+          warningLevel += 2;
+          warningCount++;
+        }
+        
+        if (char.integrationValue === "baja") {
+          warningLevel += 1;
+          warningCount++;
+        }
+      });
+      
+      const averageWarning = warningCount > 0 ? warningLevel / warningCount : 0;
+      
+      let indicatorPosition = 0;
+      let warningMessage = "";
+      
+      if (averageWarning <= 1) {
+        indicatorPosition = 15;
+        warningMessage = "Tus espacios de conservación están en buenas condiciones y bien integrados con la producción. Mantén el monitoreo regular.";
+      } else if (averageWarning <= 2) {
+        indicatorPosition = 35;
+        warningMessage = "Algunos espacios requieren atención. Considera acciones de mantenimiento o mejora en los próximos meses.";
+      } else if (averageWarning <= 3) {
+        indicatorPosition = 65;
+        warningMessage = "Varios espacios necesitan intervención. Prioriza acciones de restauración o manejo para mejorar su funcionalidad.";
+      } else {
+        indicatorPosition = 85;
+        warningMessage = "Algunos espacios están en estado crítico. Requieren acciones inmediatas para evitar pérdida de biodiversidad y servicios ecosistémicos.";
+      }
+      
+      document.getElementById('warning-indicator').style.left = `${indicatorPosition}%`;
+      document.getElementById('space-warning-message').textContent = warningMessage;
+    }
+
+    // Generar advertencia específica para corredores
+    function generateCorridorWarning() {
+      const corridorSpaces = selectedSpaces.filter(id => dataMap[id].categoria.includes("Corredor"));
+      let connectivityScore = 0;
+      
+      corridorSpaces.forEach(spaceId => {
+        const char = spaceCharacteristics.find(c => c.spaceId === spaceId);
+        if (!char) return;
+        
+        if (char.sizeValue === "grande" || char.sizeValue === "mediano") {
+          connectivityScore += 2;
+        } else {
+          connectivityScore += 1;
+        }
+        
+        if (char.speciesValue === "nativas") {
+          connectivityScore += 2;
+        } else if (char.speciesValue === "mezcla") {
+          connectivityScore += 1;
+        }
+        
+        if (char.conditionValue === "bueno") {
+          connectivityScore += 2;
+        } else if (char.conditionValue === "regular") {
+          connectivityScore += 1;
+        }
+      });
+      
+      const maxPossible = corridorSpaces.length * 6;
+      const indicatorPosition = maxPossible > 0 ? (connectivityScore / maxPossible) * 100 : 0;
+      
+      let corridorMessage = "";
+      
+      if (indicatorPosition <= 40) {
+        corridorMessage = "Los corredores seleccionados tienen baja conectividad. Considera ampliar su tamaño o mejorar su composición de especies según el informe INTA.";
+      } else if (indicatorPosition <= 70) {
+        corridorMessage = "Los corredores tienen conectividad media. Podrías mejorarlos conectándolos con otros espacios o enriqueciendo su vegetación nativa.";
+      } else {
+        corridorMessage = "Los corredores tienen buena conectividad. Mantenlos y monitorea su efectividad para el movimiento de especies.";
+      }
+      
+      document.getElementById('corridor-indicator').style.left = `${indicatorPosition}%`;
+      document.getElementById('corridor-warning-message').textContent = corridorMessage;
+    }
+
+    // Generar advertencia sobre especies exóticas
+    function generateExoticSpeciesWarning() {
+      const exoticSpaces = spaceCharacteristics.filter(char => char.speciesValue === "exoticas");
+      const totalSpaces = spaceCharacteristics.length;
+      
+      let indicatorPosition = 0;
+      let exoticMessage = "";
+      
+      if (exoticSpaces.length === 0) {
+        indicatorPosition = 10;
+        exoticMessage = "No hay especies exóticas dominantes en tus espacios. Excelente para la conservación de biodiversidad nativa.";
+      } else if (exoticSpaces.length / totalSpaces <= 0.3) {
+        indicatorPosition = 35;
+        exoticMessage = "Algunos espacios tienen especies exóticas dominantes. Monitorea su comportamiento para evitar que se vuelvan invasoras.";
+      } else if (exoticSpaces.length / totalSpaces <= 0.6) {
+        indicatorPosition = 65;
+        exoticMessage = "Varios espacios tienen especies exóticas dominantes. Considera acciones de manejo para favorecer especies nativas.";
+      } else {
+        indicatorPosition = 90;
+        exoticMessage = "La mayoría de tus espacios tienen especies exóticas dominantes. Esto puede afectar negativamente la biodiversidad nativa. Prioriza acciones de restauración.";
+      }
+      
+      document.getElementById('exotic-indicator').style.left = `${indicatorPosition}%`;
+      document.getElementById('exotic-warning-message').textContent = exoticMessage;
+    }
+
+    // Generar recomendación de temporada
+    function generateTimingRecommendation() {
+      // Julio es invierno en Argentina (hemisferio sur)
+      const currentMonth = 6; // Julio (0-11, donde 0 es Enero)
+      let indicatorPosition = 10; // Invierno por defecto
+      let timingMessage = "Estamos en invierno, ideal para planificación y preparación de acciones.";
+      
+      document.getElementById('timing-indicator').style.left = `${indicatorPosition}%`;
+      document.getElementById('timing-message').textContent = timingMessage;
+    }
+
+    // Generar recomendaciones basadas en objetivos seleccionados
+    function generateObjectiveRecommendations(element) {
+      const recommendations = [];
+      
+      if (selectedObjectives.includes('conservacion')) {
+        recommendations.push({
+          title: "Para Conservación de especies nativas:",
+          content: "Las áreas naturales y parches seminaturales son ideales. Estas áreas pueden incrementar la biodiversidad en un 45%. Considera enriquecer con especies nativas de valor ecológico y establecer zonas de protección estricta."
+        });
+      }
+      
+      if (selectedObjectives.includes('polinizacion')) {
+        recommendations.push({
+          title: "Para Mejora en polinización:",
+          content: "Los parques multifunción, cercos vivos y franjas vegetadas con flora melífera son excelentes opciones. Pueden incrementar rendimientos en un 15-25%. Incluye especies con floración escalonada."
+        });
+      }
+      
+      if (selectedObjectives.includes('control-plagas')) {
+        recommendations.push({
+          title: "Para Control biológico de plagas:",
+          content: "Los bordes de cultivo y refugios seminaturales atraen insectos benéficos. Puede reducir el uso de pesticidas en un 20-40%. Evita pesticidas en estas áreas y mantén vegetación diversa."
+        });
+      }
+      
+      if (selectedObjectives.includes('proteccion-suelo')) {
+        recommendations.push({
+          title: "Para Protección de suelos y agua:",
+          content: "Las franjas ribereñas y cortinas forestales son clave. Documentan reducción de erosión en un 30-50%. Implementa coberturas vegetales permanentes y sistemas de terrazas en pendientes."
+        });
+      }
+      
+      if (selectedObjectives.includes('conectividad')) {
+        recommendations.push({
+          title: "Para Conectividad del paisaje:",
+          content: "Los corredores lineales como cercos vivos, bordes de caminos y franjas son esenciales. Mejoran la movilidad de especies en un 30-60%. Conecta áreas naturales existentes y mantén continuidad."
+        });
+      }
+      
+      if (recommendations.length === 0) {
+        recommendations.push({
+          title: "Recomendaciones generales:",
+          content: "Considera seleccionar objetivos claros para maximizar los beneficios de tus espacios de conservación. Cada objetivo requiere diferentes tipos de espacios y manejo."
+        });
+      }
+      
+      recommendations.forEach(rec => {
+        const div = document.createElement('div');
+        div.className = 'space-highlight';
+        div.innerHTML = `<h4><i class="fas fa-clipboard-list"></i> ${rec.title}</h4><p>${rec.content}</p>`;
+        element.appendChild(div);
+      });
+    }
+
+    // Crear gráfico de impacto comparativo
+    function createImpactChart() {
+      const impactData = {
+        labels: ['Biodiversidad', 'Conectividad', 'Control de plagas', 'Polinización', 'Protección suelo'],
+        datasets: []
+      };
+      
+      const noSelectionData = [20, 15, 10, 10, 15];
+      const currentSelectionData = calculateImpactScores();
+      
+      impactData.datasets.push({
+        label: 'Sin espacios de conservación',
+        data: noSelectionData,
+        backgroundColor: 'rgba(231,76,60,0.5)',
+        borderColor: 'rgba(231,76,60,1)',
+        borderWidth: 1,
+        pointBackgroundColor: 'rgba(231,76,60,1)',
+        pointHoverRadius: 8
+      });
+      
+      impactData.datasets.push({
+        label: 'Con tu selección actual',
+        data: currentSelectionData,
+        backgroundColor: 'rgba(39,174,96,0.5)',
+        borderColor: 'rgba(39,174,96,1)',
+        borderWidth: 1,
+        pointBackgroundColor: 'rgba(39,174,96,1)',
+        pointHoverRadius: 8
+      });
+      
+      const impactCtx = document.getElementById('impactChart').getContext('2d');
+      new Chart(impactCtx, {
+        type: 'radar',
+        data: impactData,
+        options: {
+          responsive: true,
+          scales: {
+            r: {
+              angleLines: { display: true },
+              suggestedMin: 0,
+              suggestedMax: 100,
+              pointLabels: { font: { size: 12 } }
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Impacto Comparativo de tu Selección',
+              font: { size: 16 }
+            },
+            legend: {
+              position: 'top',
+              labels: { font: { size: 12 } }
+            },
+            tooltip: {
+              bodyFont: { size: 12 },
+              titleFont: { size: 14 }
+            }
+          },
+          elements: {
+            line: { tension: 0.1 }
+          }
+        }
+      });
+    }
+
+    // Calcular puntajes de impacto para la selección actual
+    function calculateImpactScores() {
+      if (selectedSpaces.length === 0) return [20, 15, 10, 10, 15];
+      
+      const scores = {
+        biodiversidad: 0,
+        conectividad: 0,
+        controlPlagas: 0,
+        polinizacion: 0,
+        proteccionSuelo: 0
+      };
+      
+      selectedSpaces.forEach(spaceId => {
+        const data = dataMap[spaceId];
+        if (!data) return;
+        
+        const spaceChar = spaceCharacteristics.find(char => char.spaceId === spaceId);
+        
+        if (data.categoria.includes("Natural")) {
+          scores.biodiversidad += 30;
+        } else {
+          scores.biodiversidad += 15;
+        }
+        
+        if (data.categoria.includes("Corredor")) {
+          scores.conectividad += 25;
+        } else {
+          scores.conectividad += 10;
+        }
+        
+        const hasPestControl = data.beneficiosProduccion.some(b => b.includes("plaga"));
+        scores.controlPlagas += hasPestControl ? 20 : 5;
+        
+        const hasPollination = data.beneficiosProduccion.some(b => b.includes("poliniz"));
+        scores.polinizacion += hasPollination ? 25 : 5;
+        
+        const hasSoilProtection = data.beneficiosProduccion.some(b => b.includes("suelo") || b.includes("erosión"));
+        scores.proteccionSuelo += hasSoilProtection ? 20 : 10;
+        
+        if (spaceChar) {
+          if (spaceChar.sizeValue === "grande") {
+            scores.biodiversidad *= 1.2;
+            scores.conectividad *= 1.1;
+          } else if (spaceChar.sizeValue === "pequeno") {
+            scores.biodiversidad *= 0.8;
+          }
+          
+          if (spaceChar.speciesValue === "nativas") {
+            scores.biodiversidad *= 1.3;
+          } else if (spaceChar.speciesValue === "exoticas") {
+            scores.biodiversidad *= 0.7;
+          }
+          
+          if (spaceChar.integrationValue === "alta") {
+            scores.controlPlagas *= 1.2;
+            scores.polinizacion *= 1.2;
+          } else if (spaceChar.integrationValue === "baja") {
+            scores.controlPlagas *= 0.8;
+            scores.polinizacion *= 0.8;
+          }
+          
+          if (spaceChar.conditionValue === "degradado") {
+            scores.biodiversidad *= 0.7;
+            scores.conectividad *= 0.8;
+          } else if (spaceChar.conditionValue === "bueno") {
+            scores.biodiversidad *= 1.1;
+            scores.conectividad *= 1.1;
+          }
+        }
+      });
+      
+      if (selectedObjectives.includes('conservacion')) {
+        scores.biodiversidad *= 1.3;
+      }
+      if (selectedObjectives.includes('polinizacion')) {
+        scores.polinizacion *= 1.3;
+      }
+      if (selectedObjectives.includes('control-plagas')) {
+        scores.controlPlagas *= 1.3;
+      }
+      if (selectedObjectives.includes('proteccion-suelo')) {
+        scores.proteccionSuelo *= 1.3;
+      }
+      if (selectedObjectives.includes('conectividad')) {
+        scores.conectividad *= 1.3;
+      }
+      
+      const maxPossible = selectedSpaces.length * 30;
+      return [
+        Math.min(100, scores.biodiversidad / maxPossible * 100),
+        Math.min(100, scores.conectividad / maxPossible * 100),
+        Math.min(100, scores.controlPlagas / maxPossible * 100),
+        Math.min(100, scores.polinizacion / maxPossible * 100),
+        Math.min(100, scores.proteccionSuelo / maxPossible * 100)
+      ];
+    }
+
+    // Funciones auxiliares para obtener etiquetas descriptivas
+    function getSizeLabel(value) {
+      const sizes = {
+        'pequeno': 'Pequeño (menos de 1 ha)',
+        'mediano': 'Mediano (1-5 ha)',
+        'grande': 'Grande (más de 5 ha)'
+      };
+      return sizes[value] || value;
+    }
+
+    function getSpeciesLabel(value) {
+      const species = {
+        'nativas': 'Predominio de nativas',
+        'mezcla': 'Mezcla de nativas y exóticas',
+        'exoticas': 'Predominio de exóticas'
+      };
+      return species[value] || value;
+    }
+
+    function getIntegrationLabel(value) {
+      const integrations = {
+        'alta': 'Alta integración',
+        'media': 'Integración media',
+        'baja': 'Baja integración'
+      };
+      return integrations[value] || value;
+    }
+
+    function getConditionLabel(value) {
+      const conditions = {
+        'bueno': 'Buen estado',
+        'regular': 'Estado regular',
+        'degradado': 'Estado degradado'
+      };
+      return conditions[value] || value;
+    }
+
+    // Actualizar la imagen del paso actual
+    function updateCurrentStepImage(step) {
+      const image = document.getElementById('current-step-image');
+      image.src = `paso${step}.jpg`;
+      image.onclick = function() { openModal(this.src); };
+    }
+
+    // Iniciar el proceso
+    function startProcess() {
+      document.getElementById('process-container').style.display = 'block';
+      document.querySelector('.decision-section').style.display = 'none';
+      
+      const video = document.getElementById('infografia-video');
+      video.play();
+      
+      document.querySelectorAll('.interactive-point').forEach(point => {
+        point.style.display = 'none';
+      });
+      
+      video.addEventListener('ended', function() {
+        document.querySelectorAll('.interactive-point').forEach(point => {
+          point.style.display = 'flex';
+        });
+        document.getElementById('replay-btn').style.display = 'flex';
+      });
+      
+      document.getElementById('process-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Función para reproducir video nuevamente
+    function replayVideo() {
+      const video = document.getElementById('infografia-video');
+      video.currentTime = 0;
+      video.play();
+      
+      document.querySelectorAll('.interactive-point').forEach(point => {
+        point.style.display = 'none';
+      });
+      
+      video.addEventListener('ended', function() {
+        document.querySelectorAll('.interactive-point').forEach(point => {
+          point.style.display = 'flex';
+        });
+      });
+    }
+
+    // Detener el video y mostrar la infografía
+    function stopVideo() {
+      const video = document.getElementById('infografia-video');
+      video.pause();
+      video.currentTime = video.duration - 0.1;
+      
+      document.querySelectorAll('.interactive-point').forEach(point => {
+        point.style.display = 'flex';
+      });
+      document.getElementById('replay-btn').style.display = 'flex';
+    }
+
+    // Saltar al final del video y mostrar los puntos interactivos
+    function skipToEnd() {
+      const video = document.getElementById('infografia-video');
+      video.currentTime = video.duration - 0.1;
+      
+      document.querySelectorAll('.interactive-point').forEach(point => {
+        point.style.display = 'flex';
+      });
+      document.getElementById('replay-btn').style.display = 'flex';
+    }
+
+    // Confirmar espacios seleccionados y avanzar al paso 2
+    function confirmSpace() {
+      if (selectedSpaces.length === 0) {
+        alert('Por favor selecciona al menos un espacio en el mapa antes de continuar');
+        return;
+      }
+      
+      document.getElementById('step-number-1').classList.add('completed');
+      document.getElementById('process-icon-1').classList.add('completed');
+      document.getElementById('confirm-space').classList.add('completed');
+      document.getElementById('step-2').style.display = 'block';
+      
+      updateCurrentStepImage(2);
+      document.getElementById('step-2').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Función para abrir modal de imagen
+    function openModal(imageSrc) {
+      const modal = document.getElementById('imageModal');
+      const modalImg = document.getElementById('modalImage');
+      modal.style.display = "block";
+      modalImg.src = imageSrc;
+    }
+
+    // Función para cerrar modal de imagen
+    function closeModal() {
+      document.getElementById('imageModal').style.display = "none";
+    }
+
+    // Manejar acordeones
+    function setupAccordions() {
+      document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', function() {
+          const item = this.closest('.accordion-item');
+          item.classList.toggle('active');
+          
+          const content = item.querySelector('.accordion-content');
+          if (item.classList.contains('active')) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+          } else {
+            content.style.maxHeight = '0';
+          }
+        });
+      });
+    }
+
+    // Navegar a un paso específico
+    function goToStep(stepNumber) {
+      if (stepNumber > 1 && selectedSpaces.length === 0) {
+        alert('Debes completar el Paso 1 (Identificación de espacios) antes de continuar.');
+        return;
+      }
+      
+      if (stepNumber > 2 && selectedObjectives.length === 0) {
+        alert('Debes completar el Paso 2 (Definición de objetivos) antes de continuar.');
+        return;
+      }
+      
+      if (stepNumber > 3 && spaceCharacteristics.length === 0) {
+        alert('Debes completar el Paso 3 (Caracterización) antes de continuar.');
+        return;
+      }
+      
+      document.querySelectorAll('.step-card').forEach(step => {
+        step.style.display = 'none';
+      });
+      
+      document.getElementById(`step-${stepNumber}`).style.display = 'block';
+      updateCurrentStepImage(stepNumber);
+      document.getElementById(`step-${stepNumber}`).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Alternar volumen del video
+    function toggleVideoVolume() {
+      const video = document.getElementById('infografia-video');
+      videoMuted = !videoMuted;
+      video.muted = videoMuted;
+      
+      if (videoMuted) {
+        document.getElementById('volume-btn').innerHTML = '<i class="fas fa-volume-mute"></i>';
+      } else {
+        document.getElementById('volume-btn').innerHTML = '<i class="fas fa-volume-up"></i>';
+      }
+    }
+
+    // Reiniciar todo el proceso
+    function resetAll() {
+      // Limpiar selecciones
+      selectedSpaces = [];
+      selectedObjectives = [];
+      spaceCharacteristics = [];
+      
+      // Restablecer puntos interactivos
+      document.querySelectorAll('.interactive-point').forEach(point => {
+        point.classList.remove('selected');
+      });
+      
+      // Restablecer objetivos
+      document.querySelectorAll('.objective-item').forEach(item => {
+        item.classList.remove('selected');
+        const checkbox = item.querySelector('.objective-checkbox');
+        if (checkbox) checkbox.checked = false;
+      });
+      
+      // Restablecer formularios de caracterización
+      document.getElementById('characterization-container').innerHTML = '';
+      
+      // Ocultar secciones
+      document.getElementById('selected-spaces-footer').style.display = 'none';
+      document.getElementById('report-container').style.display = 'none';
+      
+      // Restablecer pasos completados
+      document.querySelectorAll('.step-number.completed, .process-icon.completed').forEach(el => {
+        el.classList.remove('completed');
+      });
+      
+      // Restablecer botones completados
+      document.querySelectorAll('.step-btn.primary.completed').forEach(btn => {
+        btn.classList.remove('completed');
+      });
+      
+      // Volver al paso 1
+      document.querySelectorAll('.step-card').forEach(step => {
+        step.style.display = 'none';
+      });
+      document.getElementById('step-1').style.display = 'block';
+      updateCurrentStepImage(1);
+      
+      // Restablecer video
+      const video = document.getElementById('infografia-video');
+      video.pause();
+      video.currentTime = 0;
+      document.getElementById('replay-btn').style.display = 'none';
+      
+      // Mostrar sección de decisión inicial
+      document.querySelector('.decision-section').style.display = 'block';
+      document.getElementById('process-container').style.display = 'none';
+      
+      // Desplazar al inicio
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Configurar navegación entre pasos
+    function setupStepNavigation() {
+      document.getElementById('to-step-3').addEventListener('click', () => {
+        if (selectedObjectives.length === 0) {
+          alert('Por favor selecciona al menos un objetivo antes de continuar');
+          return;
+        }
+        
+        document.getElementById('step-number-2').classList.add('completed');
+        document.getElementById('process-icon-2').classList.add('completed');
+        document.getElementById('to-step-3').classList.add('completed');
+        
+        generateCharacterizationForms();
+        document.getElementById('step-3').style.display = 'block';
+        updateCurrentStepImage(3);
+        document.getElementById('step-3').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      document.getElementById('to-step-4').addEventListener('click', () => {
+        try {
+          saveSpaceCharacteristics();
+          document.getElementById('step-number-3').classList.add('completed');
+          document.getElementById('process-icon-3').classList.add('completed');
+          document.getElementById('to-step-4').classList.add('completed');
+          document.getElementById('step-4').style.display = 'block';
+          updateCurrentStepImage(4);
+          document.getElementById('step-4').scrollIntoView({ behavior: 'smooth' });
+        } catch (e) {
+          console.error(e);
+        }
+      });
+      
+      document.getElementById('to-step-5').addEventListener('click', () => {
+        document.getElementById('step-number-4').classList.add('completed');
+        document.getElementById('process-icon-4').classList.add('completed');
+        document.getElementById('to-step-5').classList.add('completed');
+        document.getElementById('step-5').style.display = 'block';
+        updateCurrentStepImage(5);
+        document.getElementById('step-5').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      document.getElementById('to-step-6').addEventListener('click', () => {
+        document.getElementById('step-number-5').classList.add('completed');
+        document.getElementById('process-icon-5').classList.add('completed');
+        document.getElementById('to-step-6').classList.add('completed');
+        document.getElementById('step-6').style.display = 'block';
+        updateCurrentStepImage(6);
+        document.getElementById('step-6').scrollIntoView({ behavior: 'smooth' });
+      });
+      
+      document.getElementById('finish-process').addEventListener('click', () => {
+        document.getElementById('step-number-6').classList.add('completed');
+        document.getElementById('process-icon-6').classList.add('completed');
+        document.getElementById('finish-process').classList.add('completed');
+        generateFinalReport();
+      });
+      
+      document.getElementById('back-to-1').addEventListener('click', () => {
+        document.getElementById('step-2').style.display = 'none';
+        updateCurrentStepImage(1);
+      });
+      
+      document.getElementById('back-to-2').addEventListener('click', () => {
+        document.getElementById('step-3').style.display = 'none';
+        updateCurrentStepImage(2);
+      });
+      
+      document.getElementById('back-to-3').addEventListener('click', () => {
+        document.getElementById('step-4').style.display = 'none';
+        updateCurrentStepImage(3);
+      });
+      
+      document.getElementById('back-to-4').addEventListener('click', () => {
+        document.getElementById('step-5').style.display = 'none';
+        updateCurrentStepImage(4);
+      });
+      
+      document.getElementById('back-to-5').addEventListener('click', () => {
+        document.getElementById('step-6').style.display = 'none';
+        updateCurrentStepImage(5);
+      });
+      
+      document.querySelectorAll('.objective-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+          const objectiveId = this.closest('.objective-item').dataset.id;
+          toggleObjectiveSelection(objectiveId);
+        });
+      });
+      
+      document.querySelectorAll('.step-number').forEach(step => {
+        step.addEventListener('click', function() {
+          const stepNumber = this.textContent;
+          goToStep(stepNumber);
+        });
+      });
+      
+      document.querySelectorAll('.process-icon').forEach(icon => {
+        icon.addEventListener('click', function() {
+          const stepNumber = this.textContent;
+          goToStep(stepNumber);
+        });
+      });
+      
+      // Botones de reinicio
+      document.getElementById('restart-process').addEventListener('click', resetAll);
+      document.getElementById('reset-all-btn').addEventListener('click', resetAll);
+    }
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.interactive-point').forEach(el => {
+        el.addEventListener('mouseenter', function(e) {
+          clearTimeout(hoverTimeout);
+          hoverTimeout = setTimeout(() => {
+            showTooltip({ target: this }, true);
+          }, 300);
+        });
+        
+        el.addEventListener('mouseleave', function() {
+          clearTimeout(hoverTimeout);
+          hideTooltip(true);
+        });
+        
+        el.addEventListener('click', function(e) {
+          e.stopPropagation();
+          clearTimeout(hoverTimeout);
+          showTooltip({ target: this });
+          toggleSpaceSelection(this.dataset.id);
+        });
+      });
+      
+      document.getElementById('close-sidebar-btn').addEventListener('click', hideTooltip);
+      
+      document.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('interactive-point') && !e.target.closest('.tooltip-sidebar')) {
+          hideTooltip();
+        }
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          hideTooltip();
+        }
+      });
+      
+      document.getElementById('start-process').addEventListener('click', startProcess);
+      document.getElementById('confirm-space').addEventListener('click', confirmSpace);
+      document.getElementById('replay-btn').addEventListener('click', replayVideo);
+      document.getElementById('stop-btn').addEventListener('click', stopVideo);
+      document.getElementById('skip-btn').addEventListener('click', skipToEnd);
+      document.getElementById('volume-btn').addEventListener('click', toggleVideoVolume);
+      
+      setupStepNavigation();
+      setupAccordions();
+      
+      document.getElementById('imageModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal();
+        }
+      });
+      
+      document.getElementById('current-step-image').addEventListener('click', function() {
+        openModal(this.src);
+      });
+      
+      // Configurar botón de descarga de informe
+      document.getElementById('download-report').addEventListener('click', function() {
+        alert('Función de descarga de informe habilitada. En una implementación real, aquí se generaría un PDF con los datos del informe.');
+      });
+    });
+  </script>
+</body>
+</html>
